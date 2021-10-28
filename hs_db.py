@@ -3,6 +3,7 @@
 # datei: hs_db.py
 # autor: Helmut Sigl
 # datum: 28/10/2021
+# blub
 # ------------------------------
 
 # Imports

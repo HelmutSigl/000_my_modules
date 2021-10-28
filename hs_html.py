@@ -3,7 +3,6 @@
 # datei: hs_html.py
 # autor: Helmut Sigl
 # datum: 28/10/2021
-# foo
 # ------------------------------
 
 class Basic_element:

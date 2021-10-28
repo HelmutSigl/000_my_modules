@@ -3,7 +3,6 @@
 # datei: hs_log.py
 # autor: Helmut Sigl
 # datum: 28/10/2021
-# faa
 # ------------------------------
 
 # Imports

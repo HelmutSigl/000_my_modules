@@ -2,30 +2,33 @@
 # ------------------------------
 # datei: hs_html.py
 # autor: Helmut Sigl
-# datum: 28/10/2021
+# datum: 03/11/2021
 # ------------------------------
 
-from hs_logbase import Log_base
+# Imports
 
+from hs_logbase import Logbase
+
+# Definitions
 
 class Basic_element:
 
 	def __init__(self, p_content = ''):
-		self.content = ''
+		self.__content = ''
 		if p_content != '':
 			self.set(p_content)
 
 	def set(self, p_content):
 		if isinstance(p_content, str):
-			self.content = p_content
+			self.__content = p_content
 
 	def put(self):
-		print(self.content)
+		print(self.__content)
 
 class Advanced_element:
 	
 	def __init__(self, p_content = ''):
-		self.all_elements = []
+		self.__all_elements = []
 		if p_content != '':
 			self.add(p_content)
 
@@ -34,32 +37,32 @@ class Advanced_element:
 			t = Basic_element(p_element)
 			self.add(t)
 		elif isinstance(p_element, Basic_element):
-			self.all_elements.append(p_element)
+			self.__all_elements.append(p_element)
 		elif isinstance(p_element, Advanced_element):
-			self.all_elements.append(p_element)
+			self.__all_elements.append(p_element)
 
 	def put(self):
-		if self.all_elements != []:
-			for i in self.all_elements:
+		if self.__all_elements != []:
+			for i in self.__all_elements:
 				i.put()
 
-class Webpage(Advanced_element, Log_base):
+class Webpage(Advanced_element, Logbase):
 
 	def __init__(self, p_title = 'unbenannt', p_css = ''):
 		Advanced_element.__init__(self)
-		Log_base.__init__(self)
-		self.title = ''
-		self.all_css = []
+		Logbase.__init__(self)
+		self.__title = ''
+		self.__all_css = []
 		self.set_title(p_title)
 		self.add_css(p_css)
 
 	def set_title(self, p_title):
 		if isinstance(p_title, str):
-			self.title = p_title
+			self.__title = p_title
 
 	def add_css(self, p_file):
 		if isinstance(p_file, str) and p_file != '':
-			self.all_css.append(p_file)
+			self.__all_css.append(p_file)
 
 	def put(self):
 		print(self.__put_pagehead())
@@ -71,12 +74,12 @@ class Webpage(Advanced_element, Log_base):
 		ret += '<!DOCTYPE html>\n'
 		ret += '<html lang="de">\n'
 		ret += '\t<head>\n'
-		if self.all_css != []:
-			for i in self.all_css:
+		if self.__all_css != []:
+			for i in self.__all_css:
 				ret += '\t\t<link rel="stylesheet" href="%s">\n' %(i)
 		ret += '\t\t<meta charset="utf-8" />\n'
 		ret += '\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n'
-		ret += '\t\t<title>%s</title>\n' %(self.title)
+		ret += '\t\t<title>%s</title>\n' %(self.__title)
 		ret += '\t</head>\n'
 		ret += '\t<body>\n'
 		return ret
@@ -91,13 +94,13 @@ class Divclass(Advanced_element):
 	def __init__(self, p_klasse = ''):
 		Advanced_element.__init__(self)
 		if isinstance(p_klasse, str):
-			self.klasse = p_klasse
+			self.__klasse = p_klasse
 
 	def put(self):
-		if self.klasse != '':
-			print ('<div class="%s">' %(self.klasse))
+		if self.__klasse != '':
+			print ('<div class="%s">' %(self.__klasse))
 			Advanced_element.put(self)
-			print ('</div>\t<!-- Ende der Klasse *** %s -->' %(self.klasse))
+			print ('</div>\t<!-- Ende der Klasse *** %s -->' %(self.__klasse))
 		else:
 			print ('<div>')
 			Advanced_element.put(self)
@@ -106,7 +109,6 @@ class Divclass(Advanced_element):
 class Webhelper:
 
 	def __init__(self):
-		
 		# Definition Abkürzungen und Konstanten
 		self.cr = self.br(1)
 		self.lf = self.br(2)

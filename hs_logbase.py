@@ -5,14 +5,18 @@
 # datum: 03/11/2021
 # ------------------------------
 
-class Log_base:
+# Imports
+
+# Definitions
+
+class Logbase:
 
     def __init__(self):
-        self.lf = ''
+        self.__lf = ''
 
     def set_log(self, p_logfile):
-        self.lf = p_logfile
+        self.__lf = p_logfile
     
     def log(self, p_message):
-        try: self.lf.put(p_message)
+        try: self.__lf.put(p_message)
         except: pass

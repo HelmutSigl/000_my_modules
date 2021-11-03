@@ -82,7 +82,7 @@ class Sqlite_db(Logbase):
 	def __init__(self, p_database):
 		Logbase.__init__()
 		self.__db = sqlite3.connect(p_database)
-		self.__dbc = self.db.cursor()
+		self.__dbc = self.__db.cursor()
 
 	# Führt den übergebenen SQL-Befehl aus und liefert das
 	# Ergebnis als eine Menge von Tupeln zurück
@@ -117,7 +117,7 @@ class Maria_db(Sqlite_db):
 			host=p_host,
 			user=p_user,
 			passwd=p_password,
-			database=self.database)
+			database=self.__database)
 		self.__dbc = self.__db.cursor()
 
 	# Generiert einen "DESCRIBE-Befehl" für die übergebene Tabelle,

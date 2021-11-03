@@ -112,12 +112,12 @@ class Maria_db(Sqlite_db):
 
 	# Belegt die globalen Variablen und stellt Verbindung zur Datenbank her
 	def __init__(self, p_host, p_user, p_password, p_database):
-		self.__database = p_database
+		Logbase.__init__(self)
 		self.__db = mysql.connector.connect(
 			host=p_host,
 			user=p_user,
 			passwd=p_password,
-			database=self.__database)
+			database=p_database)
 		self.__dbc = self.__db.cursor()
 
 	# Generiert einen "DESCRIBE-Befehl" für die übergebene Tabelle,

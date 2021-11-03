@@ -5,6 +5,9 @@
 # datum: 28/10/2021
 # ------------------------------
 
+from hs_logbase import Log_base
+
+
 class Basic_element:
 
 	def __init__(self, p_content = ''):
@@ -40,13 +43,13 @@ class Advanced_element:
 			for i in self.all_elements:
 				i.put()
 
-class Webpage(Advanced_element):
+class Webpage(Advanced_element, Log_base):
 
 	def __init__(self, p_title = 'unbenannt', p_css = ''):
 		Advanced_element.__init__(self)
+		Log_base.__init__(self)
 		self.title = ''
 		self.all_css = []
-		self.lf = ''
 		self.set_title(p_title)
 		self.add_css(p_css)
 
@@ -57,13 +60,6 @@ class Webpage(Advanced_element):
 	def add_css(self, p_file):
 		if isinstance(p_file, str) and p_file != '':
 			self.all_css.append(p_file)
-
-	def set_log(self, p_logfile):
-		self.lf = p_logfile
-    
-	def log(self, p_message):
-		try: self.lf.put(p_message)
-		except: pass
 
 	def put(self):
 		print(self.__put_pagehead())

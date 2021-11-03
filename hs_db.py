@@ -81,15 +81,15 @@ class Sqlite_db(Logbase):
 	# und legt diese neu an falls sie nicht existiert
 	def __init__(self, p_database):
 		Logbase.__init__(self)
-		self.__db = sqlite3.connect(p_database)
-		self.__dbc = self.__db.cursor()
+		self.db = sqlite3.connect(p_database)
+		self.dbc = self.db.cursor()
 
 	# Führt den übergebenen SQL-Befehl aus und liefert das
 	# Ergebnis als eine Menge von Tupeln zurück
 	def exec(self, p_sql):
-		self.__dbc.execute(p_sql)
+		self.dbc.execute(p_sql)
 		ret = ()
-		for x in self.__dbc:
+		for x in self.dbc:
 			ret += x,
 		return ret
 
@@ -102,23 +102,23 @@ class Sqlite_db(Logbase):
 
 	# Commited die gemachten Änderungen in der Datenbank
 	def commit(self):
-		self.__db.commit()
+		self.db.commit()
 
 	# Schließt die Datenbank
 	def close(self):
-		self.__db.close()
+		self.db.close()
 
 class Maria_db(Sqlite_db):
 
 	# Belegt die globalen Variablen und stellt Verbindung zur Datenbank her
 	def __init__(self, p_host, p_user, p_password, p_database):
 		Logbase.__init__(self)
-		self.__db = mysql.connector.connect(
+		self.db = mysql.connector.connect(
 			host=p_host,
 			user=p_user,
 			passwd=p_password,
 			database=p_database)
-		self.__dbc = self.__db.cursor()
+		self.dbc = self.db.cursor()
 
 	# Generiert einen "DESCRIBE-Befehl" für die übergebene Tabelle,
 	# führt ihn aus und liefert das Ergebnis als eine Menge

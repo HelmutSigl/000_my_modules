@@ -17,7 +17,7 @@ from hs_logbase import Logbase
 class Database(Logbase):
 	
 	def __init__(self, p_config_file):
-		Logbase.__init__()
+		Logbase.__init__(self)
 		# Instanz von Konfiguration erzeugen
 		self.__config = Configuration(p_config_file)
 		# Status checken
@@ -80,7 +80,7 @@ class Sqlite_db(Logbase):
 	# Belegt die globalen Variablen, stellt Verbindung zur Datenbank her
 	# und legt diese neu an falls sie nicht existiert
 	def __init__(self, p_database):
-		Logbase.__init__()
+		Logbase.__init__(self)
 		self.__db = sqlite3.connect(p_database)
 		self.__dbc = self.__db.cursor()
 

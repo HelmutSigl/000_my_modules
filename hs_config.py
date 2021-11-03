@@ -15,7 +15,7 @@ from hs_logbase import Logbase
 class Configuration(Logbase):
 
     def __init__(self, p_config_file):
-        Logbase.__init__()
+        Logbase.__init__(self)
 		# Instanz von Konfiguration erzeugen
         self.__config = configparser.ConfigParser()
 		# Konfiguration einlesen

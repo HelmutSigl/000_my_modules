@@ -2,7 +2,7 @@
 # ------------------------------
 # datei: hs_log.py
 # autor: Helmut Sigl
-# datum: 28/10/2021
+# datum: 03/11/2021
 # ------------------------------
 
 # Imports
@@ -14,9 +14,10 @@ from hs_config import Configuration
 
 class Logfile:
 
-    def __init__(self, p_config_file = ''):
+    def __init__(self, p_config_file = 'hs_log.log'):
+        
         self.logfile = Configuration(p_config_file).get('logging', 'logfile')
-        if self.logfile == '': self.logfile = 'hs_log.log'
+        if self.logfile == '': self.logfile = p_config_file
 
     def put(self, p_message):
         
@@ -27,4 +28,5 @@ class Logfile:
         elif p_message == 'leerzeile': datei.write('\r')
         else: datei.write(zeitstempel + ' : ' + p_message + '\r')
         datei.close()
+
 

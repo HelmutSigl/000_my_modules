@@ -2,7 +2,7 @@
 # ------------------------------
 # datei: hs_config.py
 # autor: Helmut Sigl
-# datum: 03/11/2021
+# datum: 04/11/2021
 # ------------------------------
 
 # Imports

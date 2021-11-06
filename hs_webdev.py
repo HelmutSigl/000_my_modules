@@ -1,56 +1,21 @@
 #!/usr/bin/python3
 # ------------------------------
-# datei: hs_html.py
+# datei: hs_webdev.py
 # autor: Helmut Sigl
-# datum: 04/11/2021
+# datum: 06/11/2021
 # ------------------------------
 
 # Imports
 
-from hs_logbase import Logbase
+from hs_baseclasses import Logbase, Advanced_html_element
 
 # Definitions
 
-class Basic_element:
+class Webpage(Advanced_html_element, Logbase):
 
-	def __init__(self, p_content = ''):
-		self.__content = ''
-		if p_content != '':
-			self.set(p_content)
-
-	def set(self, p_content):
-		if isinstance(p_content, str):
-			self.__content = p_content
-
-	def put(self):
-		print(self.__content)
-
-class Advanced_element:
-	
-	def __init__(self, p_content = ''):
-		self.__all_elements = []
-		if p_content != '':
-			self.add(p_content)
-
-	def add(self, p_element):
-		if isinstance(p_element, str):
-			t = Basic_element(p_element)
-			self.add(t)
-		elif isinstance(p_element, Basic_element):
-			self.__all_elements.append(p_element)
-		elif isinstance(p_element, Advanced_element):
-			self.__all_elements.append(p_element)
-
-	def put(self):
-		if self.__all_elements != []:
-			for i in self.__all_elements:
-				i.put()
-
-class Webpage(Advanced_element, Logbase):
-
-	def __init__(self, p_title = 'unbenannt', p_css = ''):
-		Advanced_element.__init__(self)
-		Logbase.__init__(self)
+	def __init__(self, p_title = 'unbenannt', p_css = '', p_log_obj = ''):
+		Advanced_html_element.__init__(self)
+		self.lo = p_log_obj
 		self.__title = ''
 		self.__all_css = []
 		self.set_title(p_title)
@@ -60,13 +25,13 @@ class Webpage(Advanced_element, Logbase):
 		if isinstance(p_title, str):
 			self.__title = p_title
 
-	def add_css(self, p_file):
-		if isinstance(p_file, str) and p_file != '':
-			self.__all_css.append(p_file)
+	def add_css(self, p_css):
+		if isinstance(p_css, str) and p_css != '':
+			self.__all_css.append(p_css)
 
 	def put(self):
 		print(self.__put_pagehead())
-		Advanced_element.put(self)
+		Advanced_html_element.put(self)
 		print(self.__put_pageend())
 
 	def __put_pagehead(self):
@@ -89,21 +54,21 @@ class Webpage(Advanced_element, Logbase):
 		ret += '</html>\n'
 		return ret
 
-class Divclass(Advanced_element):
+class Divclass(Advanced_html_element):
 	
 	def __init__(self, p_klasse = ''):
-		Advanced_element.__init__(self)
+		Advanced_html_element.__init__(self)
 		if isinstance(p_klasse, str):
 			self.__klasse = p_klasse
 
 	def put(self):
 		if self.__klasse != '':
 			print ('<div class="%s">' %(self.__klasse))
-			Advanced_element.put(self)
+			Advanced_html_element.put(self)
 			print ('</div>\t<!-- Ende der Klasse *** %s -->' %(self.__klasse))
 		else:
 			print ('<div>')
-			Advanced_element.put(self)
+			Advanced_html_element.put(self)
 			print ('</div>')
 
 class Webhelper:
@@ -126,8 +91,8 @@ class Webhelper:
 
 	# Gibt einen Link zurück. Dieser Link kann in einem neuen Tab oder im
 	# alten Tab geöffnet werden.
-	def link(self, p_new, p_wohin, p_text):
-		if p_new == self.new: 
+	def link(self, p_wo, p_wohin, p_text):
+		if p_wo == self.new: 
 			ret = '<a href="%s" target="_blank">%s</a>' %(p_wohin, p_text)
 		else:
 			ret = '<a href="%s">%s</a>' %(p_wohin, p_text)
@@ -135,9 +100,9 @@ class Webhelper:
 
 	# Gibt den übergebenen Text als Überschrift (h1..h6) zurück,
 	# Default = h1.
-	def hx(self, p_text, p_wert = 1):
-		if p_wert not in range(1,7): p_wert = 1
-		return '<h%i>%s</h%i>' %(p_wert, p_text, p_wert)
+	def hx(self, p_text, p_size = 1):
+		if p_size not in range(1,7): p_size = 1
+		return '<h%i>%s</h%i>' %(p_size, p_text, p_size)
 
 	# Gibt eine horizontale Linie zurück.
 	# Diese kann "thin" oder "thick" sein,
@@ -184,7 +149,7 @@ class Webhelper:
 	# Gibt eine Tabelle zurück. Folgende Parameter werden verarbeitet:
 	# 1. Allgemeine Tabellenüberschrift (Caption) als String: 'bla'
 	# 2. Die Spaltenüberschriften als einzelnes Tupel: ('bla', 'blub')
-	# 3. Die Daten als Liste von Tupel: ('bla1', 'blub1'), ('bla2', 'blub2')
+	# 3. Die Daten als Menge von Tupeln: ('bla1', 'blub1'), ('bla2', 'blub2')
 	# Sollte nur eine Zeile ausgegeben werden gilt folgendes: ('bla', 'blub'),
 	# Das gilt auch wenn die Tupel im Script zusammengesetzt werden!
 	# Die letzten vier Parameter bestimmen den Rand für Caption, Tabelle, Spaltenüberschrift

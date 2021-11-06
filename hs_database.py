@@ -1,71 +1,72 @@
 #!/usr/bin/python3
 # ------------------------------
-# datei: hs_db.py
+# datei: hs_database.py
 # autor: Helmut Sigl
-# datum: 04/11/2021
+# datum: 06/11/2021
 # ------------------------------
 
 # Imports
 
 import sqlite3
 import mysql.connector
-from hs_config import Configuration
-from hs_logbase import Logbase
+from hs_baseclasses import Logbase
+from hs_files import Configfile
 
 # Definitions
 
 class Database(Logbase):
 	
-	def __init__(self, p_config_file):
-		Logbase.__init__(self)
-		# Instanz von Konfiguration erzeugen
-		self.__config = Configuration(p_config_file)
-		# Status checken
-		if self.__config.state():
-			# Weiterverarbeitung wenn es geklappt hat
-			self.__database_type()
+	def __init__(self, p_config_file, p_log_obj = ''):
+		self.lo = p_log_obj
+		self.__config = Configfile(p_config_file, self.lo)
+		self.__db = ''
+		self.__database_type()
 
 	def get(self):
-		# Datenbank zurückgeben
 		return self.__db
 
 	def __database_type(self):
-			
-		# Angefragten Datenbanktyp einlesen
 		in_use = self.__config.get('database', 'in_use')
-		# Weiterverarbeitung je nach Datenbanktyp
 		if in_use == 'sqlite': self.__connect_sqlite()
 		elif in_use == 'maria': self.__connect_maria()
+		else: self.log('Database: Kann "in_use" nicht verarbeiten, keine Datenbank verbunden')
 
 	def __connect_sqlite(self):
-		
-		# Verbindungsdaten besorgen
 		database = self.__config.get('sqlite', 'database')
-		# Datenbank erzeugen
-		self.__db = Sqlite_db(database)
-		# Wenn Setup konfiguriert,
-		# Daten besorgen und Setup ausführen
-		if self.__config.get('sqlite', 'setup') == 'ja':
+		if database != '':
+			try:
+				self.__db = Sqlite_db(database, self.lo)
+				self.log('Database: Sqlite_db - Datenbank wurde verbunden')
+			except: 
+				self.__db = ''
+				self.log('Database: Sqlite_db - Datenbank wurde NICHT verbunden, Exception')
+		else:
+			self.log('Database: Sqlite_db - Datenbank wurde NICHT verbunden, Parameterfehler')
+		# Setup usw. noch zu überarbeiten, existiert Datenbank überhaupt usw.
+		if self.__db != '' and self.__config.get('sqlite', 'setup') == 'ja':
 			set = self.__get_setup('sqlite')
 			self.__db.exec(set)
 
 	def __connect_maria(self):
-		
-		# Verbindungsdaten besorgen
 		host = self.__config.get('maria', 'host')
 		user = self.__config.get('maria', 'user')
 		password = self.__config.get('maria', 'password')
 		database = self.__config.get('maria', 'database')
-		# Datenbank erzeugen
-		self.__db = Maria_db(host, user, password, database)
-		# Wenn Setup konfiguriert,
-		# Daten besorgen und Setup ausführen
-		if self.__config.get('maria', 'setup') == 'ja':
+		if host != '' and user != '' and password != '' and database != '':
+			try:
+				self.__db = Maria_db(host, user, password, database, self.lo)
+				self.log('Database: Maria_db - Datenbank wurde verbunden')
+			except: 
+				self.__db = ''
+				self.log('Database: Maria_db - Datenbank wurde NICHT verbunden, Exception')
+		else:
+			self.log('Database: Maria_db - Datenbank wurde NICHT verbunden, Parameterfehler')
+		# Setup usw. noch zu überarbeiten, existiert Datenbank überhaupt usw.
+		if self.__db != '' and self.__config.get('maria', 'setup') == 'ja':
 			set = self.__get_setup('maria')
 			self.__db.exec(set)
 
 	def __get_setup(self, p_type):
-
 		# Wieviele Zeilen sind einzulesen
 		setcount = int(self.__config.get(p_type, 'setcount'))
 		# Einlesen in String
@@ -79,8 +80,8 @@ class Sqlite_db(Logbase):
 
 	# Belegt die globalen Variablen, stellt Verbindung zur Datenbank her
 	# und legt diese neu an falls sie nicht existiert
-	def __init__(self, p_database):
-		Logbase.__init__(self)
+	def __init__(self, p_database, p_log_obj = ''):
+		self.lo = p_log_obj
 		self.db = sqlite3.connect(p_database)
 		self.dbc = self.db.cursor()
 
@@ -111,8 +112,8 @@ class Sqlite_db(Logbase):
 class Maria_db(Sqlite_db):
 
 	# Belegt die globalen Variablen und stellt Verbindung zur Datenbank her
-	def __init__(self, p_host, p_user, p_password, p_database):
-		Logbase.__init__(self)
+	def __init__(self, p_host, p_user, p_password, p_database, p_log_obj = ''):
+		self.lo = p_log_obj
 		self.db = mysql.connector.connect(
 			host=p_host,
 			user=p_user,

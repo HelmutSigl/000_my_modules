@@ -17,7 +17,7 @@ from hs_files import Configfile
 class Database(Logbase):
 	
 	def __init__(self, p_config_file, p_log_obj = ''):
-		self.lo = p_log_obj
+		Logbase.__init__(self, p_log_obj)
 		self.__config = Configfile(p_config_file, self.lo)
 		self.__db = ''
 		self.__database_type()
@@ -81,7 +81,7 @@ class Sqlite_db(Logbase):
 	# Belegt die globalen Variablen, stellt Verbindung zur Datenbank her
 	# und legt diese neu an falls sie nicht existiert
 	def __init__(self, p_database, p_log_obj = ''):
-		self.lo = p_log_obj
+		Logbase.__init__(self, p_log_obj)
 		self.db = sqlite3.connect(p_database)
 		self.dbc = self.db.cursor()
 
@@ -113,7 +113,7 @@ class Maria_db(Sqlite_db):
 
 	# Belegt die globalen Variablen und stellt Verbindung zur Datenbank her
 	def __init__(self, p_host, p_user, p_password, p_database, p_log_obj = ''):
-		self.lo = p_log_obj
+		Logbase.__init__(self, p_log_obj)
 		self.db = mysql.connector.connect(
 			host=p_host,
 			user=p_user,

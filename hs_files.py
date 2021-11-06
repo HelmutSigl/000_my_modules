@@ -16,7 +16,7 @@ from hs_baseclasses import Logbase
 class Configfile(Logbase):
 
     def __init__(self, p_config_file, p_log_obj = ''):
-        self.lo = p_log_obj
+        Logbase.__init__(self, p_log_obj)
         self.__cf = p_config_file
         self.__config = configparser.ConfigParser()
         self.__config.read(p_config_file)

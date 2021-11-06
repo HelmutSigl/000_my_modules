@@ -15,7 +15,7 @@ class Webpage(Advanced_html_element, Logbase):
 
 	def __init__(self, p_title = 'unbenannt', p_css = '', p_log_obj = ''):
 		Advanced_html_element.__init__(self)
-		self.lo = p_log_obj
+		Logbase.__init__(self, p_log_obj)
 		self.__title = ''
 		self.__all_css = []
 		self.set_title(p_title)

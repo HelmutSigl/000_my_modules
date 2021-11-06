@@ -47,11 +47,11 @@ class Advanced_html_element:
 class Logbase:
 
     def __init__(self, p_log_obj):
-        self.__lo = p_log_obj
+        self.lo = p_log_obj
 
     def set_lo(self, p_log_obj):
-        self.__lo = p_log_obj
+        self.lo = p_log_obj
     
     def log(self, p_message):
-        try: self.__lo.log(p_message)
+        try: self.lo.log(p_message)
         except: pass

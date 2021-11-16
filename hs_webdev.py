@@ -58,8 +58,8 @@ class Webpage(Advanced_html_element, Logbase):
 		ret = ''
 		if self.__all_js != []:
 			for i in self.__all_js:
-				ret += '\t\t<script src="%s"></script>\n' %(i)
-		ret += '\n\t</body>\n'
+				ret += '\n\t\t<script src="%s"></script>\n' %(i)
+		ret += '\t</body>\n'
 		ret += '</html>\n'
 		return ret
 
@@ -75,6 +75,23 @@ class Divclass(Advanced_html_element):
 			print ('<div class="%s">' %(self.__klasse))
 			Advanced_html_element.put(self)
 			print ('</div>\t<!-- Ende der Klasse *** %s -->' %(self.__klasse))
+		else:
+			print ('<div>')
+			Advanced_html_element.put(self)
+			print ('</div>')
+
+class Divid(Advanced_html_element):
+	
+	def __init__(self, p_id = ''):
+		Advanced_html_element.__init__(self)
+		if isinstance(p_id, str):
+			self.__id = p_id
+
+	def put(self):
+		if self.__id != '':
+			print ('<div id="%s">' %(self.__id))
+			Advanced_html_element.put(self)
+			print ('</div>\t<!-- Ende der ID *** %s -->' %(self.__id))
 		else:
 			print ('<div>')
 			Advanced_html_element.put(self)

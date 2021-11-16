@@ -13,7 +13,7 @@ from hs_baseclasses import Logbase, Advanced_html_element
 
 class Webpage(Advanced_html_element, Logbase):
 
-	def __init__(self, p_title = 'unbenannt', p_css = '', p_log_obj = ''):
+	def __init__(self, p_title = 'unbenannt', p_css = '', p_js = '', p_log_obj = ''):
 		Advanced_html_element.__init__(self)
 		Logbase.__init__(self, p_log_obj)
 		self.__title = ''
@@ -21,6 +21,7 @@ class Webpage(Advanced_html_element, Logbase):
 		self.__all_js = []
 		self.set_title(p_title)
 		self.add_css(p_css)
+		self.add_js(p_js)
 
 	def set_title(self, p_title):
 		if isinstance(p_title, str):

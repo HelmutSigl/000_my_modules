@@ -58,7 +58,7 @@ class Webpage(Advanced_html_element, Logbase):
 		ret = ''
 		if self.__all_js != []:
 			for i in self.__all_js:
-				ret += '<script src="%s">\n' %(i)
+				ret += '\t\t<script src="%s"></script>\n' %(i)
 		ret += '\n\t</body>\n'
 		ret += '</html>\n'
 		return ret

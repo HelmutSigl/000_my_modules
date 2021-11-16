@@ -2,7 +2,7 @@
 # ------------------------------
 # datei: hs_webdev.py
 # autor: Helmut Sigl
-# datum: 06/11/2021
+# datum: 16/11/2021
 # ------------------------------
 
 # Imports
@@ -18,6 +18,7 @@ class Webpage(Advanced_html_element, Logbase):
 		Logbase.__init__(self, p_log_obj)
 		self.__title = ''
 		self.__all_css = []
+		self.__all_js = []
 		self.set_title(p_title)
 		self.add_css(p_css)
 
@@ -28,6 +29,10 @@ class Webpage(Advanced_html_element, Logbase):
 	def add_css(self, p_css):
 		if isinstance(p_css, str) and p_css != '':
 			self.__all_css.append(p_css)
+
+	def add_js(self, p_js):
+		if isinstance(p_js, str) and p_js != '':
+			self.__all_js.append(p_js)
 
 	def put(self):
 		print(self.__put_pagehead())
@@ -50,7 +55,11 @@ class Webpage(Advanced_html_element, Logbase):
 		return ret
 
 	def __put_pageend(self):
-		ret = '\n\t</body>\n'
+		ret = ''
+		if self.__all_js != []:
+			for i in self.__all_js:
+				ret += '<script src="%s">\n' %(i)
+		ret += '\n\t</body>\n'
 		ret += '</html>\n'
 		return ret
 

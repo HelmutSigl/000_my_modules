@@ -2,7 +2,7 @@
 # ------------------------------
 # datei: hs_vaping.py
 # autor: Helmut Sigl
-# datum: 21/11/2021
+# datum: 25/11/2021
 # ------------------------------
 
 # Imports
@@ -135,9 +135,13 @@ class Bunker_mischung:
                     self.bunker_ml = p_liquid.nic_mg / self.bunker_nic_mg_p_ml
                     self.pg_ml = p_liquid.pg_ml - self.bunker_ml
                     self.vg_ml = p_liquid.vg_ml
+                    if self.bunker_ml >= 0 and self.pg_ml >= 0 and self.vg_ml >= 0:
+                        pass
+                    else:
+                        self.fehler = 'Mischung: Nicht herstellbar'
                 else: self.fehler = 'Liquidfehler: ' + p_liquid.message()
             else: self.fehler = 'Mischung: Objektfehler'
-
+            
         def state(self):
             if self.fehler == '': ret = True
             else: ret = False

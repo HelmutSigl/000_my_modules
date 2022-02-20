@@ -2,7 +2,7 @@
 # ------------------------------
 # datei: hs_webdev.py
 # autor: Helmut Sigl
-# datum: 16/11/2021
+# datum: 20/02/2022
 # ------------------------------
 
 # Imports
@@ -143,7 +143,7 @@ class Webhelper:
 
 	# Gibt die angegebene Menge erzwungener Leerzeichen zurück,
 	# Default ist 1.
-	def lz(p_anzahl = 1):
+	def lz(self, p_anzahl = 1):
 		ret = ''
 		for x in range(p_anzahl):
 			ret += '&nbsp;'

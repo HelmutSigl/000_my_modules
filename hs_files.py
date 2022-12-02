@@ -4,7 +4,7 @@
 # autor: Helmut Sigl
 # datum: 06/11/2021
 # ------------------------------
-# bla
+
 # Imports
 
 import configparser
